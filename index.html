@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Barışalım mı Zeynep?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      /* Barışacağınız kişiyle olan fotoğrafınızın linkini aşağıdaki URL ile değiştirin */
+      background-image: url('https://r.resimlink.com/UvsGBMZ.jpg');
+      background-repeat: repeat;
+      background-size: 300px auto;
+      background-position: center;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(6px);
+      border-radius: 24px;
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3rem;
+      color: #ffffff;
+      text-shadow: 10px 10px 10px rgba(0, 0, 0, 0.8); /* Siyah gölge eklendi */
+      margin-bottom: 32px;
+      margin-top: 0;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 28px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'Poppins', sans-serif;
+      border: none;
+      border-radius: 16px;
+      font-size: 20px;
+      font-weight: 600;
+      padding: 16px 36px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-yes {
+      background-color: #fa4775;
+      color: #fff;
+    }
+
+    .btn-no {
+      background-color: #fbd1dc;
+      color: #a60f3c;
+    }
+
+    #noPrompt {
+      font-size: 1.2rem;
+      color: #ffffff;
+      font-weight: 500;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+      margin-top: 10px;
+      min-height: 30px;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.09); }
+      80% { transform: scale(0.97); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .btn-row {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      h1 {
+        font-size: 2.4rem;
+      }
+
+      #finalMessage {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <!-- Barışacağınız kişinin adını aşağıadki satıra yazın -->
+<h1>bayramda kusluk olmaz yasemincim gel barisalim...</h1>
+    <div class="btn-row" id="btnRow">
+      <button class="btn btn-yes" id="yesBtn" onclick="handleYes()">Evet</button>
+      <button class="btn btn-no" id="noBtn" onclick="handleNo()">Hayır</button>
+    </div>
+    <div id="noPrompt"></div>
+    <div id="finalMessage"></div>
+  </div>
+
+  <script>
+    const noPrompts = [
+      "Emin misin? 🥺",
+      "Bir daha düşün! 😢",
+      "Cidden mi ya... 😳",
+      "Vallahi kırılırım bak 🙁",
+      "Gerçekten hayır mı? 😔",
+      "Son kararın mı? 😬",
+      "Bak, çok üzüldüm... 😭",
+      "Bir şans daha vermez misin? 💔"
+    ];
+    let noCount = 0;
+    const videoUrlYes = "https://www.youtube.com/watch?v=6vNHHKmhZo0&pp=ygUOYmHFnyBoYXJmaSBiZW7SBwkJsgkBhyohjO8%3D"; // Evet butonuna tıklandığında yönlendirilecek link
+    const videoUrlNo = "https://www.youtube.com/watch?v=UXK9s54VmxQ&pp=ygUJa3VtcmFsxLFt"; // Hayır butonuna tıklandığında yönlendirilecek link
+
+    function handleNo() {
+      noCount++;
+      const prompt = noPrompts[(noCount - 1) % noPrompts.length];
+      document.getElementById("noPrompt").textContent = prompt;
+
+      const yesBtn = document.getElementById("yesBtn");
+      if (noCount < 8) {
+        let scale = 1 + noCount * 0.18;
+        yesBtn.style.transform = `scale(${scale})`;
+        yesBtn.style.fontSize = `${20 + noCount * 3}px`;
+        yesBtn.style.padding = `${16 + noCount * 2}px ${36 + noCount * 10}px`;
+        document.getElementById("btnRow").style.marginBottom = `${28 + noCount * 20}px`;
+      }
+
+      if (noCount >= 8) {
+        // 8. kez 'Hayır' basıldığında sadece video linkine yönlendiriyoruz
+        setTimeout(() => {
+          window.location.href = videoUrlNo;
+        }, 1000); // 1 saniye sonra yönlendirir
+        document.getElementById("btnRow").style.display = "none"; // Ekranı temizle
+        document.getElementById("noPrompt").style.display = "none"; // Prompt'u gizle
+        document.getElementById("finalMessage").style.display = "none"; // Mesajı gizle
+      }
+    }
+
+    function handleYes() {
+      // Evet butonuna basıldığında YouTube linkine yönlendirme yapılacak
+      setTimeout(() => {
+        window.location.href = videoUrlYes;
+      }, 1000); // 1 saniye sonra yönlendirir
+      document.getElementById("btnRow").style.display = "none"; // Ekranı temizle
+      document.getElementById("noPrompt").style.display = "none"; // Prompt'u gizle
+      document.getElementById("finalMessage").style.display = "none"; // Mesajı gizle
+    }
+  </script>
+</body>
+</html>
